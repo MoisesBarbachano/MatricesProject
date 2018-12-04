@@ -17,14 +17,18 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Esta clase permite controlar a la vista Grafica para que la vista no se entere de los cambios hechos por el usuario,
- * solo permita introducir y mostrar datos sin realizar operaciones dentro de la misma.
+ * Esta clase permite controlar a la vista Grafica para que la vista no se
+ * entere de los cambios hechos por el usuario, solo permita introducir y
+ * mostrar datos sin realizar operaciones dentro de la misma.
+ *
  * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public final class ControladorGrafica implements ActionListener {
+
     //Campos de la clase
     final int PRIMERINDICE = 0;
 
+    
 //    Multiplicacion multiplicacion;
 //    Sumatoria suma;
 //    Transpuesta transponer;
@@ -32,11 +36,13 @@ public final class ControladorGrafica implements ActionListener {
 //    Escalar escalar;
 //    GaussJordan gaussJordan;
 //    InversaGaussJordan inversaGaussJordan;
-     private GraficaMatriz vista;
+    private GraficaMatriz vista;
 
     /**
      * Método para mostrar la vista Gráfica y posicionarla
-     * @throws IOException Excepcion en caso de que no se permita mostrar la vista
+     *
+     * @throws IOException Excepcion en caso de que no se permita mostrar la
+     * vista
      */
     public void iniciar() throws IOException {
         vista.setVisible(true);
@@ -46,8 +52,8 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Constructor para el controlador de la Gráfica, setea los atributos con instancias de las clases necesarias
-     * para realizar las funcionalidades
+     * Constructor para el controlador de la Gráfica, setea los atributos con
+     * instancias de las clases necesarias para realizar las funcionalidades
      */
     public ControladorGrafica() {
         this.vista = new GraficaMatriz();
@@ -70,6 +76,7 @@ public final class ControladorGrafica implements ActionListener {
 
     /**
      * Método para escuchar un evento ocasionado por el usuario en la vista
+     *
      * @param e El evento ocasionado por el usuario
      */
     @Override
@@ -83,18 +90,18 @@ public final class ControladorGrafica implements ActionListener {
             cambiarDisponibilidadCampos();
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 1:
-                    cambiarUnicaMatriz();
+                    cambiarAUnicaMatriz();
                     break;
                 case 0:
                 case 2:
-                    cambiarDosMatrices();
+                    cambiarADosMatrices();
                     break;
 
                 case 3:
                 case 4:
                 case 5:
                 case 6:
-                    cambiarDisponibilidadFalso();
+                    cambiarDisponibilidadAFalso();
                     break;
                 default:
                     break;
@@ -104,19 +111,19 @@ public final class ControladorGrafica implements ActionListener {
 
             double[][] matrizLectura, matrizLecturaSegunda, matrizResultado = null;
 
-            matrizLectura = leermatriz(vista.tablamatrizdatos);
+            matrizLectura = leerMatriz(vista.tablamatrizdatos);
             boolean tablaActualizada = true;
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
-                    matrizResultado = Sumatoria.sumarMatrices(matrizLectura, leermatriz(vista.tablamatriz2));
+                    matrizResultado = Sumatoria.sumarMatrices(matrizLectura, leerMatriz(vista.tablamatriz2));
                     break;
 
                 case 1:
-                    matrizResultado = Escalar.multiplicarEscalar(matrizLectura, Double.parseDouble(vista.tfEscalar.getText()));
+                    matrizResultado = Escalar.multiplicarPorEscalar(matrizLectura, Double.parseDouble(vista.tfEscalar.getText()));
                     break;
 
                 case 2:
-                    matrizResultado = Multiplicacion.multiplicarMatrices(matrizLectura, leermatriz(vista.tablamatriz2));
+                    matrizResultado = Multiplicacion.multiplicarMatrices(matrizLectura, leerMatriz(vista.tablamatriz2));
                     break;
 
                 case 3:
@@ -125,7 +132,7 @@ public final class ControladorGrafica implements ActionListener {
 
                 case 4:
 //                    Determinante determinanteGauss = new Determinante();
-                    if ( Determinante.obtenerDeterminante(matrizLectura) != 0) {
+                    if (Determinante.obtenerDeterminante(matrizLectura) != 0) {
                         matrizResultado = InversaGaussJordan.invertirGaussJordan(matrizLectura);
                         break;
                     } else {
@@ -148,7 +155,7 @@ public final class ControladorGrafica implements ActionListener {
 
             }
             if (tablaActualizada == true) {
-                actualizarTabla(matrizResultado);
+                actualizarTablaResultante(matrizResultado);
             }
         }
         if (e.getSource() == vista.Botoncambiar) {
@@ -158,32 +165,34 @@ public final class ControladorGrafica implements ActionListener {
             vista.agregarfilcol.setEnabled(false);
             vista.botonagregarmatriz.setEnabled(true);
 
-            int numFilas,numColumnas,numFilasSegundaMatriz,numColumSegundaMatriz = 0;
+            int numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz = 0;
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
                 case 2:
 
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
+                    numFilas =(Integer.parseInt(vista.tfFilas.getText()));
+                    numColumnas=(Integer.parseInt(vista.tfColumnas.getText()));
                     numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
                     numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText());
-                    actualizartablas(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
+                    inicializarTablasDeMatrices(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
                     break;
 
-                case 1: 
+                case 1:
                     vista.tfEscalar.setEnabled(false);
 
-                case 3: case 5: case 6:
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
-                    actualizartabla(numFilas, numColumnas, vista.tablamatrizdatos);
+                case 3:
+                case 5:
+                case 6:
+                    numFilas=(Integer.parseInt(vista.tfFilas.getText()));
+                    numColumnas=(Integer.parseInt(vista.tfColumnas.getText()));
+                    inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
                     break;
 
                 case 4:
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
+                    numFilas=(Integer.parseInt(vista.tfFilas.getText()));
+                    numColumnas=(Integer.parseInt(vista.tfColumnas.getText()));
                     if (numFilas == numColumnas) {
-                        actualizartabla(numFilas, numColumnas, vista.tablamatrizdatos);
+                        inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
                         break;
                     } else {
                         JOptionPane.showMessageDialog(null, "La inversa solo se puede realizar para matrices cuadradas");
@@ -199,9 +208,10 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Método que bloquea todos los campos donde el usuario puede introducir datos
+     * Método que bloquea todos los campos donde el usuario puede introducir
+     * datos
      */
-    public void bloquearCampos() {
+    private void bloquearCampos() {
         vista.tablamatrizfunciones.setEnabled(false);
         vista.tablamatriz2.setEnabled(false);
         vista.tablamatrizdatos.setEnabled(false);
@@ -217,13 +227,13 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Método para reiniciar la vista en caso de querer realizar un nuevo método para poder limpiar los campos
-     * de datos introducidos ya no necesarios.
+     * Método para reiniciar la vista en caso de querer realizar un nuevo método
+     * para poder limpiar los campos de datos introducidos ya no necesarios.
      */
-    public void reiniciarVista() {
-        quitartabla(vista.tablamatrizdatos);
-        quitartabla(vista.tablamatriz2);
-        quitartabla(vista.tablamatrizfunciones);
+    private void reiniciarVista() {
+        desactivarTabla(vista.tablamatrizdatos);
+        desactivarTabla(vista.tablamatriz2);
+        desactivarTabla(vista.tablamatrizfunciones);
         vista.botonfunciones.setEnabled(true);
         vista.tablamatrizfunciones.setEnabled(false);
         vista.tablamatriz2.setEnabled(false);
@@ -247,59 +257,68 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Método para permitir introducir datos a filas y columnas, pero no al campo de determinante.
+     * Método para permitir introducir datos a filas y columnas, pero no al
+     * campo de determinante.
      */
-    public void cambiarDisponibilidadCampos() {
+    private void cambiarDisponibilidadCampos() {
         vista.tfFilas.setEnabled(true);
         vista.tfColumnas.setEnabled(true);
         vista.tfDeterminante.setEnabled(false);
     }
 
     /**
-     * Método para prohibir la entrada de datos para el campo determinante y los campos de la segunda matriz.
+     * Método para prohibir la entrada de datos para el campo determinante y los
+     * campos de la segunda matriz.
      */
-    public void cambiarDisponibilidadFalso() {
+    private void cambiarDisponibilidadAFalso() {
         vista.tfFilasSeg.setEnabled(false);
         vista.tfColSeg.setEnabled(false);
         vista.tfEscalar.setEnabled(false);
     }
 
     /**
-     * Método para permitir la entrada de datos para el campo determinante y prohibir los campos de la segunda matriz.
+     * Método para permitir la entrada de datos para el campo determinante y
+     * prohibir los campos de la segunda matriz.
      */
-    public void cambiarUnicaMatriz() {
+    private void cambiarAUnicaMatriz() {
         vista.tfEscalar.setEnabled(true);
         vista.tfFilasSeg.setEnabled(false);
         vista.tfColSeg.setEnabled(false);
     }
 
     /**
-     * Método para permitir la entrada de datos para los campos de una segunda matriz y prohibir el campo de determinante.
+     * Método para permitir la entrada de datos para los campos de una segunda
+     * matriz y prohibir el campo de determinante.
      */
-    public void cambiarDosMatrices() {
+    private void cambiarADosMatrices() {
         vista.tfColSeg.setEnabled(true);
         vista.tfFilasSeg.setEnabled(true);
         vista.tfEscalar.setEnabled(false);
     }
 
     /**
-     * Método para actualizar la tabla de la vista conforme a los datos de la matriz resultada de la operacion
-     * realizada.
-     * @param matrizResultado matriz obtenida de la operacion escogida por el usuario.
+     * Método para actualizar la tabla de la vista conforme a los datos de la
+     * matriz resultada de la operacion realizada.
+     *
+     * @param matrizResultado matriz obtenida de la operacion escogida por el
+     * usuario.
      */
-    public void actualizarTabla(double[][] matrizResultado) {
-        actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
+    private void actualizarTablaResultante(double[][] matrizResultado) {
+        actualizarTablaResultados(matrizResultado, vista.tablamatrizfunciones);
         vista.tablamatrizdatos.setEnabled(false);
     }
 
     /**
-     * Método para setear la primera tabla para permitir al usuario introducir datos conforme al numero de filas y
-     * columnas deseadas
+     * Método para setear la primera tabla para permitir al usuario introducir
+     * datos conforme al numero de filas y columnas deseadas
+     *
      * @param filas Número de filas deseadas por el usuario para la matriz.
-     * @param columnas Número de columnas deseadas por el usuario para la matriz.
-     * @param tabla Componente gráfico de la vista en donde se colocará el modelo y se introducirán los espacios de la matriz.
+     * @param columnas Número de columnas deseadas por el usuario para la
+     * matriz.
+     * @param tabla Componente gráfico de la vista en donde se colocará el
+     * modelo y se introducirán los espacios de la matriz.
      */
-    public void actualizartabla(int filas, int columnas, JTable tabla) {
+    private void inicializarTablaDeUnaMatriz(int filas, int columnas, JTable tabla) {
         vista.botonagregarmatriz.setEnabled(true);
         vista.Botoncambiar.setEnabled(true);
         vista.cbopcionesdematriz.setEnabled(false);
@@ -312,28 +331,27 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Método para setear las 2 tablas para permitir al usuario introducir datos conforme al numero de filas y columnas
-     * deseadas para la primera y segunda tabla respectivamente.
-     * @param filas Número de filas deseadas por el usuario para la primera matriz.
-     * @param columnas Número de columnas deseadas por el usuario para la primera matriz.
-     * @param filasseg Número de filas deseadas por el usuario para la segunda matriz.
-     * @param colseg Número de columnas deseadas por el usuario para la segunda matriz.
-     * @param tabla Componente gráfico de la vista en donde se colocará el modelo y se introducirán los espacios de la primera matriz.
-     * @param tabla2 Componente gráfico de la vista en donde se colocará el modelo y se introducirán los espacios de la segunda matriz.
+     * Método para setear las 2 tablas para permitir al usuario introducir datos
+     * conforme al numero de filas y columnas deseadas para la primera y segunda
+     * tabla respectivamente.
+     *
+     * @param filas Número de filas deseadas por el usuario para la primera
+     * matriz.
+     * @param columnas Número de columnas deseadas por el usuario para la
+     * primera matriz.
+     * @param filasseg Número de filas deseadas por el usuario para la segunda
+     * matriz.
+     * @param colseg Número de columnas deseadas por el usuario para la segunda
+     * matriz.
+     * @param tabla Componente gráfico de la vista en donde se colocará el
+     * modelo y se introducirán los espacios de la primera matriz.
+     * @param tabla2 Componente gráfico de la vista en donde se colocará el
+     * modelo y se introducirán los espacios de la segunda matriz.
      */
-    public void actualizartablas(int filas, int columnas, int filasseg, int colseg, JTable tabla, JTable tabla2) {
-        vista.botonagregarmatriz.setEnabled(true);
-        vista.Botoncambiar.setEnabled(true);
-        vista.cbopcionesdematriz.setEnabled(false);
-        vista.tfFilas.setEnabled(false);
-        vista.tfColumnas.setEnabled(false);
+    private void inicializarTablasDeMatrices(int filas, int columnas, int filasseg, int colseg, JTable tabla, JTable tabla2) {
+        inicializarTablaDeUnaMatriz(filas, columnas, tabla);
         vista.tfFilasSeg.setEnabled(false);
         vista.tfColSeg.setEnabled(false);
-
-        DefaultTableModel modelomatriz = (DefaultTableModel) tabla.getModel();
-        modelomatriz.setRowCount(filas);
-        modelomatriz.setColumnCount(columnas);
-        tabla.setEnabled(true);
 
         DefaultTableModel modelomatriz2 = (DefaultTableModel) tabla2.getModel();
         modelomatriz2.setRowCount(filasseg);
@@ -343,17 +361,19 @@ public final class ControladorGrafica implements ActionListener {
 
     /**
      * Método para leer los datos de un componente grafico tabla de la vista.
-     * @param tabla Componente gráfica de donde se recolentan los datos introducidos por el usuario.
+     *
+     * @param tabla Componente gráfica de donde se recolentan los datos
+     * introducidos por el usuario.
      * @return Devuelve una matriz con los datos introducidos por el usuario.
      */
-    public double[][] leermatriz(JTable tabla) {
-        int numFilas = tabla.getRowCount();
-        int numColumnas = tabla.getColumnCount();
+    private double[][] leerMatriz(JTable tabla) {
+        int numeroFilas = tabla.getRowCount();
+        int numeroColumnas = tabla.getColumnCount();
 
-        double[][] matrizleida = new double[numFilas][numColumnas];
+        double[][] matrizleida = new double[numeroFilas][numeroColumnas];
 
-        for (int fila = 0; fila < numFilas; fila++) {
-            for (int columna = 0; columna < numColumnas; columna++) {
+        for (int fila = 0; fila < numeroFilas; fila++) {
+            for (int columna = 0; columna < numeroColumnas; columna++) {
 
                 matrizleida[fila][columna] = Double.parseDouble(tabla.getValueAt(fila, columna).toString());
             }
@@ -362,12 +382,15 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Método para actualizar la vista de la tabla resultados con los valores obtenidos de la función escogida
-     * por el usuario.
-     * @param matriz Matriz con los datos obtenidos de la funcion escogida por el usuario.
-     * @param tabla Componente gráfico donde se mostrarán los datos obtenidos de la función escogida por el usuario.
+     * Método para actualizar la vista de la tabla resultados con los valores
+     * obtenidos de la función escogida por el usuario.
+     *
+     * @param matriz Matriz con los datos obtenidos de la funcion escogida por
+     * el usuario.
+     * @param tabla Componente gráfico donde se mostrarán los datos obtenidos de
+     * la función escogida por el usuario.
      */
-    public void actualizartablafunciones(double matriz[][], JTable tabla) {
+    private void actualizarTablaResultados(double matriz[][], JTable tabla) {
         int filasmatriz = matriz.length;
         int colmatriz = matriz[PRIMERINDICE].length;
 
@@ -384,11 +407,13 @@ public final class ControladorGrafica implements ActionListener {
     }
 
     /**
-     * Método para eliminar los datos de vista de la tabla y bloquearla para no ser utilizada u observada por el
-     * usuario.
-     * @param tabla Componente gráfico donse se muestran los datos obtenidos de la función escogida por el usuario.
+     * Método para eliminar los datos de vista de la tabla y bloquearla para no
+     * ser utilizada u observada por el usuario.
+     *
+     * @param tabla Componente gráfico donse se muestran los datos obtenidos de
+     * la función escogida por el usuario.
      */
-    public void quitartabla(JTable tabla) {
+    private void desactivarTabla(JTable tabla) {
         DefaultTableModel modelomatriz = (DefaultTableModel) tabla.getModel();
         modelomatriz.setRowCount(PRIMERINDICE);
         tabla.setEnabled(false);
