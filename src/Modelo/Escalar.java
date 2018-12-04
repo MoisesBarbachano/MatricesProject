@@ -12,7 +12,7 @@ package Modelo;
 public class Escalar {
 
     //1. NUMBER OF NODES MEASURE n, 4-2=2
-    public static double[][] multiplicarEscalar(double[][] matriz, double escalar) {
+    public static double[][] multiplicarPorEscalar(double[][] matriz, double escalar) {
         final int PRIMERINDICE = 0;
         final int SEGUNDOINDICE = 1;
         final int DIVISOR_MODULO_PAR = 2;
