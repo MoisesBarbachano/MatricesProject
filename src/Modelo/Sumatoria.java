@@ -1,16 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 /**
- *
- * @author pepe_
+ * Esta clase contiene la funcionalidad de sumar dos matrices.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class Sumatoria {
 
+    /**
+     * Método para sumar dos matrices.
+     * @param primeraMatriz Matriz a sumar con otra.
+     * @param segundaMatriz Matriz a sumar con otra.
+     * @return Matriz resultante de la suama de dos matrices.
+     */
     //2. NUMBER OF EDGES MEASURE , 5-1=4
     public static double[][] sumarMatrices(double[][] primeraMatriz, double[][] segundaMatriz) {
         final int PRIMERINDICE = 0;

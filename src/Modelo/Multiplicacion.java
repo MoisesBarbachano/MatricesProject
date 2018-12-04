@@ -1,16 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 /**
- *
- * @author sulak
+ * Esta clase contiene la funcionalidad para multiplicar matrices.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class Multiplicacion {
 
+    /**
+     * Método para multiplicar dos matrices.
+     * @param primeraMatriz Matriz a multiplicar.
+     * @param segundaMatriz Matriz a multiplicar.
+     * @return Matriz resultante de la multiplicación.
+     */
     //3. THE LARGEST PRIME MEASURE k, V(f)=1+(MAX(D2+MAX(D3))), 1+1+1=3
     public static double[][] multiplicarMatrices(double[][] primeraMatriz, double[][] segundaMatriz) {
         final int PRIMERINDICE = 0;

@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 /**
- *
- * @author 52999
+ * Esta clase contiene la funcionalidad para obtener el determinante de una matriz.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class Determinante {
 
+    /**
+     * Método que devuelve el determinante de una matriz introducida.
+     * @param matriz Matriz con datos de la cual se desea obtener el determinante.
+     * @return Determinante del parámetro matriz.
+     */
     public static double obtenerDeterminante(double[][] matriz) {
         final int PRIMERINDICE = 0;
         final int SEGUNDOINDICE = 1;
@@ -53,7 +53,12 @@ public class Determinante {
         }                                                                                                                   //Se evita usar código que dependa de los valores de los indices finales de los loop
         return sumatoriaDeterminante;
     }
-    
+
+    /**
+     * Método para saber si un valor es par
+     * @param valor Valor a comprobar
+     * @return Booleano true si es par, false si no lo es.
+     */
     public static boolean esPar(int valor){
         return ((valor % 2) == 0);
     }

@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 /**
- *
- * @author 52999
+ * Esta clase contiene la funcionalidad para multiplicar una matriz por un escalar.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class Escalar {
-
+    /**
+     * Método para multiplicar una matriz por un escalar.
+     * @param matriz Matriz con la que se multiplicará el escalar.
+     * @param escalar Número a multiplicar con una matriz.
+     * @return Matriz resultante la multiplicación de una matriz con el escalar.
+     */
     //1. NUMBER OF NODES MEASURE n, 4-2=2
     public static double[][] multiplicarPorEscalar(double[][] matriz, double escalar) {
         final int PRIMERINDICE = 0;
