@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import java.util.Scanner;
 
+
 /**
- *
- * @author 52999
+ * Esta clase contiene la funcionalidad para obtener la matriz inversa de una matriz mediante el método de Gauss Jordan.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class InversaGaussJordan {
 
     /**
-     *
-     * @param args the command line arguments
+     * Método para obtener la inversa de una matriz mediante método de Gauss Jordan.
+     * @param matrizEntrada Matriz de la cual se quiere su inversa.
+     * @return Matriz invertida por método de Gauss Jordan.
      */
     public static double[][] invertirGaussJordan(double matrizEntrada[][]) {
         double[][] matrizInvertida = matrizEntrada;

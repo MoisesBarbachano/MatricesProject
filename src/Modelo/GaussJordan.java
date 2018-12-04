@@ -1,16 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 /**
- *
- * @author sulak
+ * Esta clase contiene la funcionalidad para realizarle Gauss Jordan a una matriz.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class GaussJordan {
 
+
+    /**
+     * Método para resolver el Gauss Jordan de una matriz.
+     * @param matriz Matriz a querer resolver Gauss Jordan.
+     * @return Matriz resuelta con Gauss Jordan.
+     */
     public static double[][] resolverGaussJordan(double[][] matriz){
         double [][] matrizGaussJordan = matriz;
         int pivote = 0;

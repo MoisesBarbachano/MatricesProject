@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 /**
- *
- * @author pepe_
+ * Esta clase contiene la funcionalidad de transponer una matriz.
+ * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class Transpuesta {
 
+    /**
+     * Método para transponer una matriz introducida.
+     * @param matriz Matriz a querer transponer.
+     * @return Matriz transpuesta obtenida.
+     */
     //5. D STRUCTURED MEASURE d, D1+MIN(D2), 1+1=2
     public static double[][] transponerMatrices(double[][] matriz) {
         final int PRIMERINDICE = 0;
