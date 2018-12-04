@@ -53,7 +53,7 @@ public class GaussJordanTest {
         }
          System.out.println("|");
        }
-        double[][] expResult ={{1,0,-1}, {0,1,4}};
+        double[][] expResult ={{1,0,0,3.0}, {0,1,0,-2.5},{0,0,1,7.000000000000002}};
         double[][] result = GaussJordan.resolverGaussJordan(matriz);
        
         for (int x=0; x < result.length; x++) {
