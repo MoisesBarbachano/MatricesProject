@@ -17,8 +17,8 @@ public class InversaGaussJordan {
      * @param args the command line arguments
      */
     public static double[][] invertirGaussJordan(double matrizEntrada[][]) {
-
-        int tamanioMatriz = matrizEntrada.length;
+        double[][] matrizInvertida = matrizEntrada;
+        int tamanioMatriz = matrizInvertida.length;
         double matrizResultado[][] = new double[tamanioMatriz][tamanioMatriz];
         double matrizAuxiliar[][] = new double[tamanioMatriz][tamanioMatriz];
 
@@ -37,7 +37,7 @@ public class InversaGaussJordan {
         for (int fila = 0; fila < tamanioIndice; ++fila) {
             double factorTemporal1 = 0;
             for (int columna = 0; columna < tamanioIndice; ++columna) {
-                double factorTemporal2 = Math.abs(matrizEntrada[fila][columna]);
+                double factorTemporal2 = Math.abs(matrizInvertida[fila][columna]);
                 if (factorTemporal2 > factorTemporal1) {
                     factorTemporal1 = factorTemporal2;
                 }
@@ -50,7 +50,7 @@ public class InversaGaussJordan {
             double primerPivote = 0;
             for (int columnaPivote = filaPivote; columnaPivote < tamanioIndice; ++columnaPivote) {
 
-                double pivoteCero = Math.abs(matrizEntrada[indice[columnaPivote]][filaPivote]);
+                double pivoteCero = Math.abs(matrizInvertida[indice[columnaPivote]][filaPivote]);
                 pivoteCero /= vectorFactores[indice[columnaPivote]];
                 if (pivoteCero > primerPivote) {     //COLOCAR SENTENCIA SIGNIFICATIVA DENTRO DE LA CLAUSULA IF
                     primerPivote = pivoteCero;
@@ -62,10 +62,10 @@ public class InversaGaussJordan {
             indice[filaPivote] = indice[contadorPivote];
             indice[contadorPivote] = indiceTemporal;
             for (int filaMatriz = filaPivote + 1; filaMatriz < tamanioIndice; ++filaMatriz) {
-                double elementoMatriz = matrizEntrada[indice[filaMatriz]][filaPivote] / matrizEntrada[indice[filaPivote]][filaPivote];
-                matrizEntrada[indice[filaMatriz]][filaPivote] = elementoMatriz;
+                double elementoMatriz = matrizInvertida[indice[filaMatriz]][filaPivote] / matrizInvertida[indice[filaPivote]][filaPivote];
+                matrizInvertida[indice[filaMatriz]][filaPivote] = elementoMatriz;
                 for (int columnaMatriz = filaPivote + 1; columnaMatriz < tamanioIndice; ++columnaMatriz) {
-                    matrizEntrada[indice[filaMatriz]][columnaMatriz] -= elementoMatriz * matrizEntrada[indice[filaPivote]][columnaMatriz];
+                    matrizInvertida[indice[filaMatriz]][columnaMatriz] -= elementoMatriz * matrizInvertida[indice[filaPivote]][columnaMatriz];
                 }
             }
         }
@@ -74,21 +74,21 @@ public class InversaGaussJordan {
             for (int contadorFilas = contadorEscalona + 1; contadorFilas < tamanioMatriz; ++contadorFilas) { //LIMITAR EL ALCANCE DE LOS INDICES DEL LOOP PARA SI MISMOS
                 for (int contadorColumnas = 0; contadorColumnas < tamanioMatriz; ++contadorColumnas) { //DECLARAR VARIABLES INDICES DENTRO DE CADA LOOP 
                     matrizAuxiliar[indice[contadorFilas]][contadorColumnas]
-                            -= matrizEntrada[indice[contadorFilas]][contadorEscalona] * matrizAuxiliar[indice[contadorEscalona]][contadorColumnas];
+                            -= matrizInvertida[indice[contadorFilas]][contadorEscalona] * matrizAuxiliar[indice[contadorEscalona]][contadorColumnas];
                 }
             }
         }
 
         //LIMITAR LOS LOOPS ANIDADOS A MAXIMO 3 NIVELES
         for (int contadorIdentidad = 0; contadorIdentidad < tamanioMatriz; ++contadorIdentidad) {
-            matrizResultado[tamanioMatriz - 1][contadorIdentidad] = matrizAuxiliar[indice[tamanioMatriz - 1]][contadorIdentidad] / matrizEntrada[indice[tamanioMatriz - 1]][tamanioMatriz - 1];
+            matrizResultado[tamanioMatriz - 1][contadorIdentidad] = matrizAuxiliar[indice[tamanioMatriz - 1]][contadorIdentidad] / matrizInvertida[indice[tamanioMatriz - 1]][tamanioMatriz - 1];
             for (int filaMatriz = tamanioMatriz - 2; filaMatriz >= 0; --filaMatriz) {
                 matrizResultado[filaMatriz][contadorIdentidad] = matrizAuxiliar[indice[filaMatriz]][contadorIdentidad];
                 for (int columnaMatriz = filaMatriz + 1; columnaMatriz < tamanioMatriz; ++columnaMatriz) {
-                    matrizResultado[filaMatriz][contadorIdentidad] -= matrizEntrada[indice[filaMatriz]][columnaMatriz] * matrizResultado[columnaMatriz][contadorIdentidad];
+                    matrizResultado[filaMatriz][contadorIdentidad] -= matrizInvertida[indice[filaMatriz]][columnaMatriz] * matrizResultado[columnaMatriz][contadorIdentidad];
                 }
 
-                matrizResultado[filaMatriz][contadorIdentidad] /= matrizEntrada[indice[filaMatriz]][filaMatriz];
+                matrizResultado[filaMatriz][contadorIdentidad] /= matrizInvertida[indice[filaMatriz]][filaMatriz];
             }
         }
 

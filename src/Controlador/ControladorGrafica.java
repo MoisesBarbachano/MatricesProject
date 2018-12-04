@@ -5,11 +5,13 @@
  */
 package Controlador;
 
-import Modelo.Basicas;
+import Modelo.Multiplicacion;
 import Modelo.Determinante;
 import Modelo.Escalar;
 import Modelo.GaussJordan;
 import Modelo.InversaGaussJordan;
+import Modelo.Sumatoria;
+import Modelo.Transpuesta;
 import Vista.GraficaMatriz;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +29,14 @@ public final class ControladorGrafica implements ActionListener {
 
     final int PRIMERINDICE = 0;
 
-    Basicas basicas;
-    Determinante determinante;
-    Escalar escalar;
-    GaussJordan gaussJordan;
-    InversaGaussJordan inversaGaussJordan;
-    GraficaMatriz vista;
+//    Multiplicacion multiplicacion;
+//    Sumatoria suma;
+//    Transpuesta transponer;
+//    Determinante determinante;
+//    Escalar escalar;
+//    GaussJordan gaussJordan;
+//    InversaGaussJordan inversaGaussJordan;
+     private GraficaMatriz vista;
 
     public void iniciar() throws IOException {
         vista.setVisible(true);
@@ -43,11 +47,13 @@ public final class ControladorGrafica implements ActionListener {
 
     public ControladorGrafica() {
         this.vista = new GraficaMatriz();
-        this.basicas = new Basicas();
-        this.determinante = new Determinante();
-        this.escalar = new Escalar();
-        this.gaussJordan = new GaussJordan();
-        this.inversaGaussJordan = new InversaGaussJordan();
+//        this.suma = new Sumatoria();
+//        this.transponer = new Transpuesta();
+//        this.multiplicacion = new Multiplicacion();
+//        this.determinante = new Determinante();
+//        this.escalar = new Escalar();
+//        this.gaussJordan = new GaussJordan();
+//        this.inversaGaussJordan = new InversaGaussJordan();
 
         this.vista.botonfunciones.addActionListener(this);
         this.vista.botonagregarmatriz.addActionListener(this);
@@ -66,13 +72,13 @@ public final class ControladorGrafica implements ActionListener {
             vista.Botoncambiar.setEnabled(true);
             vista.agregarfilcol.setEnabled(true);
 
-            int valorOpcion = vista.cbopcionesdematriz.getSelectedIndex();
             cambiarDisponibilidadCampos();
-            switch (valorOpcion) {
+            switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 1:
                     cambiarUnicaMatriz();
                     break;
-                case 0: case 2: 
+                case 0:
+                case 2:
                     cambiarDosMatrices();
                     break;
 
@@ -87,38 +93,31 @@ public final class ControladorGrafica implements ActionListener {
             }
         }
         if (e.getSource() == vista.botonagregarmatriz) {
-            int valorOpcion = vista.cbopcionesdematriz.getSelectedIndex();
-            Basicas opbasicas = new Basicas();
 
             double[][] matrizLectura, matrizLecturaSegunda, matrizResultado = null;
 
             matrizLectura = leermatriz(vista.tablamatrizdatos);
             boolean tablaActualizada = true;
-            switch (valorOpcion) {
+            switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
-                    matrizLecturaSegunda = leermatriz(vista.tablamatriz2);
-                    matrizResultado = opbasicas.sumarMatrices(matrizLectura, matrizLecturaSegunda);
+                    matrizResultado = Sumatoria.sumarMatrices(matrizLectura, leermatriz(vista.tablamatriz2));
                     break;
 
                 case 1:
-                    double valorEscalar = Double.parseDouble(vista.tfEscalar.getText());
-                    Escalar escalar = new Escalar();
-                    matrizResultado = escalar.multiplicarEscalar(matrizLectura, valorEscalar);
+                    matrizResultado = Escalar.multiplicarEscalar(matrizLectura, Double.parseDouble(vista.tfEscalar.getText()));
                     break;
 
                 case 2:
-                    matrizLecturaSegunda = leermatriz(vista.tablamatriz2);
-                    matrizResultado = opbasicas.multiplicarMatrices(matrizLectura, matrizLecturaSegunda);
+                    matrizResultado = Multiplicacion.multiplicarMatrices(matrizLectura, leermatriz(vista.tablamatriz2));
                     break;
 
                 case 3:
-                    matrizResultado = opbasicas.transponerMatrices(matrizLectura);
+                    matrizResultado = Transpuesta.transponerMatrices(matrizLectura);
                     break;
 
                 case 4:
-                    Determinante determinanteGauss = new Determinante();
-                    double valordeter = determinanteGauss.obtenerDeterminante(matrizLectura);
-                    if (valordeter != 0) {
+//                    Determinante determinanteGauss = new Determinante();
+                    if ( Determinante.obtenerDeterminante(matrizLectura) != 0) {
                         matrizResultado = InversaGaussJordan.invertirGaussJordan(matrizLectura);
                         break;
                     } else {
@@ -128,15 +127,12 @@ public final class ControladorGrafica implements ActionListener {
                     break;
 
                 case 5:
-                    GaussJordan gauss = new GaussJordan();
-                    matrizResultado = gauss.resolverGaussJordan(matrizLectura);
+                    matrizResultado = GaussJordan.resolverGaussJordan(matrizLectura);
                     break;
 
                 case 6:
                     tablaActualizada = false;
-                    Determinante objDet = new Determinante();
-                    double determinante = objDet.obtenerDeterminante(matrizLectura);
-                    vista.tfDeterminante.setText(String.valueOf(determinante));
+                    vista.tfDeterminante.setText(String.valueOf(Determinante.obtenerDeterminante(matrizLectura)));
                     vista.tablamatrizdatos.setEnabled(false);
                     break;
                 default:
@@ -153,10 +149,9 @@ public final class ControladorGrafica implements ActionListener {
         if (e.getSource() == vista.agregarfilcol) {
             vista.agregarfilcol.setEnabled(false);
             vista.botonagregarmatriz.setEnabled(true);
-
-            int valorOpcion = vista.cbopcionesdematriz.getSelectedIndex();
+ 
             int numFilas,numColumnas,numFilasSegundaMatriz,numColumSegundaMatriz = 0;
-            switch (valorOpcion) {
+            switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
                 case 2:
 
