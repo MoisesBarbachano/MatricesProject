@@ -23,9 +23,10 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author sulak
  */
-public class ControladorGrafica implements ActionListener {
+public final class ControladorGrafica implements ActionListener {
+
     final int PRIMERINDICE = 0;
-    
+
     Basicas basicas;
     Determinante determinante;
     Escalar escalar;
@@ -47,25 +48,14 @@ public class ControladorGrafica implements ActionListener {
         this.escalar = new Escalar();
         this.gaussJordan = new GaussJordan();
         this.inversaGaussJordan = new InversaGaussJordan();
-        
+
         this.vista.botonfunciones.addActionListener(this);
         this.vista.botonagregarmatriz.addActionListener(this);
         this.vista.Botoncambiar.addActionListener(this);
         this.vista.agregarfilcol.addActionListener(this);
 
         //Inicializacion
-        vista.tablamatrizfunciones.setEnabled(false);
-        vista.tablamatriz2.setEnabled(false);
-        vista.tablamatrizdatos.setEnabled(false);
-        vista.botonagregarmatriz.setEnabled(false);
-        vista.Botoncambiar.setEnabled(false);
-        vista.agregarfilcol.setEnabled(false);
-        vista.tfColSeg.setEnabled(false);
-        vista.tfColumnas.setEnabled(false);
-        vista.tfFilas.setEnabled(false);
-        vista.tfFilasSeg.setEnabled(false);
-        vista.tfDeterminante.setEnabled(false);
-        vista.tfEscalar.setEnabled(false);
+        bloquearCampos();
     }
 
     @Override
@@ -77,58 +67,21 @@ public class ControladorGrafica implements ActionListener {
             vista.agregarfilcol.setEnabled(true);
 
             int valorOpcion = vista.cbopcionesdematriz.getSelectedIndex();
-            activarColumnasFilas();
+            cambiarDisponibilidadCampos();
             switch (valorOpcion) {
-                case 0:
-                    vista.tfColSeg.setEnabled(true);
-                    vista.tfFilasSeg.setEnabled(true);
-                    vista.tfEscalar.setEnabled(false);
-                    vista.tfDeterminante.setEnabled(false);
-                    break;
-
                 case 1:
-                    vista.tfEscalar.setEnabled(true);
-                    vista.tfFilasSeg.setEnabled(false);
-                    vista.tfColSeg.setEnabled(false);
-                    vista.tfDeterminante.setEnabled(false);
+                    cambiarUnicaMatriz();
                     break;
-
-                case 2:
-                    vista.tfColSeg.setEnabled(true);
-                    vista.tfFilasSeg.setEnabled(true);
-                    vista.tfEscalar.setEnabled(false);
-                    vista.tfDeterminante.setEnabled(false);
+                case 0: case 2: 
+                    cambiarDosMatrices();
                     break;
 
                 case 3:
-                    vista.tfFilasSeg.setEnabled(false);
-                    vista.tfColSeg.setEnabled(false);
-                    vista.tfEscalar.setEnabled(false);
-                    vista.tfDeterminante.setEnabled(false);
-                    break;
-
                 case 4:
-                    vista.tfColSeg.setEnabled(false);
-                    vista.tfEscalar.setEnabled(false);
-                    vista.tfFilasSeg.setEnabled(false);
-                    vista.tfDeterminante.setEnabled(false);
-                    break;
-
                 case 5:
-                    vista.tfColSeg.setEnabled(false);
-                    vista.tfFilasSeg.setEnabled(false);
-                    vista.tfEscalar.setEnabled(false);
-                    vista.tfDeterminante.setEnabled(false);
-
-                    break;
-
                 case 6:
-                    vista.tfDeterminante.setEnabled(false);
-                    vista.tfFilasSeg.setEnabled(false);
-                    vista.tfColSeg.setEnabled(false);
-                    vista.tfEscalar.setEnabled(false);
+                    cambiarDisponibilidadFalso();
                     break;
-
                 default:
                     break;
             }
@@ -137,128 +90,76 @@ public class ControladorGrafica implements ActionListener {
             int valorOpcion = vista.cbopcionesdematriz.getSelectedIndex();
             Basicas opbasicas = new Basicas();
 
-            double[][] matrizLectura = null;
-            double[][] matrizLecturaSegunda = null;
-            double[][] matrizResultado = null;
+            double[][] matrizLectura, matrizLecturaSegunda, matrizResultado = null;
+
+            matrizLectura = leermatriz(vista.tablamatrizdatos);
+            boolean tablaActualizada = true;
             switch (valorOpcion) {
                 case 0:
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     matrizLecturaSegunda = leermatriz(vista.tablamatriz2);
                     matrizResultado = opbasicas.sumarMatrices(matrizLectura, matrizLecturaSegunda);
-                    actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
-                    vista.tablamatrizdatos.setEnabled(false);
                     break;
 
                 case 1:
                     double valorEscalar = Double.parseDouble(vista.tfEscalar.getText());
                     Escalar escalar = new Escalar();
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     matrizResultado = escalar.multiplicarEscalar(matrizLectura, valorEscalar);
-                    actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
-                    vista.tablamatrizdatos.setEnabled(false);
                     break;
 
                 case 2:
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     matrizLecturaSegunda = leermatriz(vista.tablamatriz2);
                     matrizResultado = opbasicas.multiplicarMatrices(matrizLectura, matrizLecturaSegunda);
-                    actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
-                    vista.tablamatrizdatos.setEnabled(false);
                     break;
 
                 case 3:
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     matrizResultado = opbasicas.transponerMatrices(matrizLectura);
-                    actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
-                    vista.tablamatrizdatos.setEnabled(false);
                     break;
 
                 case 4:
                     Determinante determinanteGauss = new Determinante();
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     double valordeter = determinanteGauss.obtenerDeterminante(matrizLectura);
                     if (valordeter != 0) {
                         matrizResultado = InversaGaussJordan.invertirGaussJordan(matrizLectura);
-                        actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
-                        vista.tablamatrizdatos.setEnabled(false);
                         break;
                     } else {
                         JOptionPane.showMessageDialog(null, "No puedes realizar la función porque la determinante de la matriz es igual a 0");
+                        tablaActualizada = false;
                     }
                     break;
 
                 case 5:
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     GaussJordan gauss = new GaussJordan();
                     matrizResultado = gauss.resolverGaussJordan(matrizLectura);
-                    actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
-                    vista.tablamatrizdatos.setEnabled(false);
                     break;
 
                 case 6:
+                    tablaActualizada = false;
                     Determinante objDet = new Determinante();
-                    matrizLectura = leermatriz(vista.tablamatrizdatos);
                     double determinante = objDet.obtenerDeterminante(matrizLectura);
                     vista.tfDeterminante.setText(String.valueOf(determinante));
                     vista.tablamatrizdatos.setEnabled(false);
                     break;
-
                 default:
                     break;
 
             }
+            if (tablaActualizada == true) {
+                actualizarTabla(matrizResultado);
+            }
         }
         if (e.getSource() == vista.Botoncambiar) {
-            quitartabla(vista.tablamatrizdatos);
-            quitartabla(vista.tablamatriz2);
-            quitartabla(vista.tablamatrizfunciones);
-            vista.botonfunciones.setEnabled(true);
-            vista.tablamatrizfunciones.setEnabled(false);
-            vista.tablamatriz2.setEnabled(false);
-            vista.tablamatrizdatos.setEnabled(false);
-            vista.botonagregarmatriz.setEnabled(false);
-            vista.Botoncambiar.setEnabled(false);
-            vista.cbopcionesdematriz.setEnabled(true);
-            vista.tfColSeg.setEnabled(false);
-            vista.tfColumnas.setEnabled(false);
-            vista.tfFilas.setEnabled(false);
-            vista.tfFilasSeg.setEnabled(false);
-            vista.tfDeterminante.setEnabled(false);
-            vista.tfEscalar.setEnabled(false);
-            vista.agregarfilcol.setEnabled(false);
-            vista.tfColSeg.setText("");
-            vista.tfColumnas.setText("");
-            vista.tfFilas.setText("");
-            vista.tfFilasSeg.setText("");
-            vista.tfDeterminante.setText("");
-            vista.tfEscalar.setText("");
+            reiniciarVista();
         }
         if (e.getSource() == vista.agregarfilcol) {
             vista.agregarfilcol.setEnabled(false);
             vista.botonagregarmatriz.setEnabled(true);
 
             int valorOpcion = vista.cbopcionesdematriz.getSelectedIndex();
-            int numFilas = 0;
-            int numColumnas = 0;
-            int numFilasSegundaMatriz = 0;
-            int numColumSegundaMatriz = 0;
+            int numFilas,numColumnas,numFilasSegundaMatriz,numColumSegundaMatriz = 0;
             switch (valorOpcion) {
                 case 0:
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
-                    numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
-                    numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText());
-                    actualizartablas(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
-                    break;
-
-                case 1:
-                    vista.tfEscalar.setEnabled(false);
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
-                    actualizartabla(numFilas, numColumnas, vista.tablamatrizdatos);
-                    break;
-
                 case 2:
+
                     numFilas = Integer.parseInt(vista.tfFilas.getText());
                     numColumnas = Integer.parseInt(vista.tfColumnas.getText());
                     numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
@@ -266,7 +167,10 @@ public class ControladorGrafica implements ActionListener {
                     actualizartablas(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
                     break;
 
-                case 3:
+                case 1: 
+                    vista.tfEscalar.setEnabled(false);
+
+                case 3: case 5: case 6:
                     numFilas = Integer.parseInt(vista.tfFilas.getText());
                     numColumnas = Integer.parseInt(vista.tfColumnas.getText());
                     actualizartabla(numFilas, numColumnas, vista.tablamatrizdatos);
@@ -284,18 +188,6 @@ public class ControladorGrafica implements ActionListener {
                         break;
                     }
 
-                case 5:
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
-                    actualizartabla(numFilas, numColumnas, vista.tablamatrizdatos);
-                    break;
-
-                case 6:
-                    numFilas = Integer.parseInt(vista.tfFilas.getText());
-                    numColumnas = Integer.parseInt(vista.tfColumnas.getText());
-                    actualizartabla(numFilas, numColumnas, vista.tablamatrizdatos);
-                    break;
-
                 default:
                     break;
 
@@ -303,11 +195,76 @@ public class ControladorGrafica implements ActionListener {
         }
     }
 
-    public void activarColumnasFilas(){
+    public void bloquearCampos() {
+        vista.tablamatrizfunciones.setEnabled(false);
+        vista.tablamatriz2.setEnabled(false);
+        vista.tablamatrizdatos.setEnabled(false);
+        vista.botonagregarmatriz.setEnabled(false);
+        vista.Botoncambiar.setEnabled(false);
+        vista.agregarfilcol.setEnabled(false);
+        vista.tfColSeg.setEnabled(false);
+        vista.tfColumnas.setEnabled(false);
+        vista.tfFilas.setEnabled(false);
+        vista.tfFilasSeg.setEnabled(false);
+        vista.tfDeterminante.setEnabled(false);
+        vista.tfEscalar.setEnabled(false);
+    }
+
+    public void reiniciarVista() {
+        quitartabla(vista.tablamatrizdatos);
+        quitartabla(vista.tablamatriz2);
+        quitartabla(vista.tablamatrizfunciones);
+        vista.botonfunciones.setEnabled(true);
+        vista.tablamatrizfunciones.setEnabled(false);
+        vista.tablamatriz2.setEnabled(false);
+        vista.tablamatrizdatos.setEnabled(false);
+        vista.botonagregarmatriz.setEnabled(false);
+        vista.Botoncambiar.setEnabled(false);
+        vista.cbopcionesdematriz.setEnabled(true);
+        vista.tfColSeg.setEnabled(false);
+        vista.tfColumnas.setEnabled(false);
+        vista.tfFilas.setEnabled(false);
+        vista.tfFilasSeg.setEnabled(false);
+        vista.tfDeterminante.setEnabled(false);
+        vista.tfEscalar.setEnabled(false);
+        vista.agregarfilcol.setEnabled(false);
+        vista.tfColSeg.setText("");
+        vista.tfColumnas.setText("");
+        vista.tfFilas.setText("");
+        vista.tfFilasSeg.setText("");
+        vista.tfDeterminante.setText("");
+        vista.tfEscalar.setText("");
+    }
+
+    public void cambiarDisponibilidadCampos() {
         vista.tfFilas.setEnabled(true);
         vista.tfColumnas.setEnabled(true);
+        vista.tfDeterminante.setEnabled(false);
     }
-            
+
+    public void cambiarDisponibilidadFalso() {
+        vista.tfFilasSeg.setEnabled(false);
+        vista.tfColSeg.setEnabled(false);
+        vista.tfEscalar.setEnabled(false);
+    }
+
+    public void cambiarUnicaMatriz() {
+        vista.tfEscalar.setEnabled(true);
+        vista.tfFilasSeg.setEnabled(false);
+        vista.tfColSeg.setEnabled(false);
+    }
+
+    public void cambiarDosMatrices() {
+        vista.tfColSeg.setEnabled(true);
+        vista.tfFilasSeg.setEnabled(true);
+        vista.tfEscalar.setEnabled(false);
+    }
+
+    public void actualizarTabla(double[][] matrizResultado) {
+        actualizartablafunciones(matrizResultado, vista.tablamatrizfunciones);
+        vista.tablamatrizdatos.setEnabled(false);
+    }
+
     public void actualizartabla(int filas, int columnas, JTable tabla) {
         vista.botonagregarmatriz.setEnabled(true);
         vista.Botoncambiar.setEnabled(true);
@@ -376,5 +333,5 @@ public class ControladorGrafica implements ActionListener {
         modelomatriz.setRowCount(PRIMERINDICE);
         tabla.setEnabled(false);
     }
-    
+
 }
