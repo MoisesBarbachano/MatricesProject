@@ -14,6 +14,7 @@ import java.util.Scanner;
 public class InversaGaussJordan {
 
     /**
+     *
      * @param args the command line arguments
      */
     public static double[][] invertirGaussJordan(double matrizEntrada[][]) {
