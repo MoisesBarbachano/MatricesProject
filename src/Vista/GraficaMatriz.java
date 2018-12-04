@@ -9,7 +9,7 @@ import Modelo.Determinante;
 import Modelo.GaussJordan;
 import Modelo.InversaGaussJordan;
 import Modelo.Escalar;
-import Modelo.Basicas;
+import Modelo.Multiplicacion;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
