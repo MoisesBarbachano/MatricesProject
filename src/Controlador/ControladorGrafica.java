@@ -171,6 +171,7 @@ public final class ControladorGrafica implements ActionListener {
             vista.botonagregarmatriz.setEnabled(true);
 
             int numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz = 0;
+            try{
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
                 case 2:
@@ -209,6 +210,7 @@ public final class ControladorGrafica implements ActionListener {
                     break;
 
             }
+            }catch(NumberFormatException exception){JOptionPane.showMessageDialog(null, "Llene todos los campos");}
         }
     }
 
@@ -372,6 +374,8 @@ public final class ControladorGrafica implements ActionListener {
      * @return Devuelve una matriz con los datos introducidos por el usuario.
      */
     private double[][] leerMatriz(JTable tabla) {
+        double [][] matrizErronea = new double[1][1];
+        try{
         int numeroFilas = tabla.getRowCount();
         int numeroColumnas = tabla.getColumnCount();
 
@@ -383,7 +387,9 @@ public final class ControladorGrafica implements ActionListener {
                 matrizleida[fila][columna] = Double.parseDouble(tabla.getValueAt(fila, columna).toString());
             }
         }
-        return matrizleida;
+             return matrizleida;   
+        }catch(NullPointerException exceptionNula){JOptionPane.showMessageDialog(null, "Llene las matrices u oprima enter en las matrices para confirmar");}
+return matrizErronea;
     }
 
     /**
