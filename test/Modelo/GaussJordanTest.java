@@ -44,26 +44,15 @@ public class GaussJordanTest {
     @Test
     public void testResolverGaussJordan() {
         System.out.println("resolverGaussJordan");
-        double[][] matriz = {{3, -0.1, -0.2,7.85}, {0.1 , 7, -0.3,-19.3},{0.3 , -0.2, 10,71.4}}; 
-        for (int x=0; x < matriz.length; x++) {
-            System.out.print("|");
-        for (int y=0; y < matriz[x].length; y++) {
-            System.out.print (matriz[x][y]);
-            if (y!=matriz[x].length-1) System.out.print("\t");
-        }
-         System.out.println("|");
-       }
-        double[][] expResult ={{1,0,0,3.0}, {0,1,0,-2.5},{0,0,1,7.000000000000002}};
+        double[][] matriz = {{1, 1, 1,3}, {2 ,3, 7,0},{1 , 3, -2,17}}; 
+      
+        
+        double[][] expResult ={{1,0,0,1}, {0,1,0,4},{0,0,1,-2}};
+        
+        
         double[][] result = GaussJordan.resolverGaussJordan(matriz);
        
-        for (int x=0; x < result.length; x++) {
-            System.out.print("|");
-        for (int y=0; y < result[x].length; y++) {
-            System.out.print (result[x][y]);
-            if (y!=result[x].length-1) System.out.print("\t");
-        }
-         System.out.println("|");
-       }
+       
         
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.

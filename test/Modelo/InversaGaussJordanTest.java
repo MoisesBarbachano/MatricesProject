@@ -46,10 +46,12 @@ public class InversaGaussJordanTest {
     public void testInvertirGaussJordan() {
         System.out.println("invertirGaussJordan");
         
-        double[][] matrizEntrada ={{1, 1, 0}, {1 , 0, 1},{0 ,1, 0}};
+        double[][] matrizEntrada ={{1, 1, 0}, {1, 0, 1},{0 , 1, 0}};
         double[][] expResult = {{1, 0, -1}, {0 , 0, 1},{-1 ,1, 1}};
         
         double[][] result = InversaGaussJordan.invertirGaussJordan(matrizEntrada);
+        
+        
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         

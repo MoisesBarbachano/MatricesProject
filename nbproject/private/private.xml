@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/sulak/Documents/NetBeansProjects/Matrices/src/Paquete/GraficaMatriz.java</file>
-            <file>file:/C:/Users/sulak/Documents/NetBeansProjects/Matrices/src/Paquete/Escalar.java</file>
-            <file>file:/C:/Users/sulak/Documents/NetBeansProjects/Matrices/src/Paquete/Basicas.java</file>
-            <file>file:/C:/Users/sulak/Documents/NetBeansProjects/Matrices/src/Paquete/InversaGaussJordan.java</file>
-            <file>file:/C:/Users/sulak/Documents/NetBeansProjects/Matrices/src/Paquete/GaussJordan.java</file>
-            <file>file:/C:/Users/sulak/Documents/NetBeansProjects/Matrices/src/Paquete/Determinante.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
