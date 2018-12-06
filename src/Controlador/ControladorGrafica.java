@@ -90,6 +90,7 @@ public final class ControladorGrafica implements ActionListener {
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 1:
                     cambiarAUnicaMatriz();
+                      JOptionPane.showMessageDialog(null, "Primero ingrese el numero de filas y columnas ademas del escalar que multiplicara la matriz, luego oprima agregar");
                     break;
                 case 0:
                 case 2:
@@ -112,13 +113,14 @@ public final class ControladorGrafica implements ActionListener {
 
             matrizLectura = leerMatriz(vista.tablamatrizdatos);
             boolean tablaActualizada = true;
+            try{
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
 
                     matrizResultado = Sumatoria.sumarMatrices(matrizLectura, leerMatriz(vista.tablamatriz2));
                     break;
 
-                case 1:
+                case 1: 
                     matrizResultado = Escalar.multiplicarPorEscalar(matrizLectura, Double.parseDouble(vista.tfEscalar.getText()));
                     break;
 
@@ -154,8 +156,15 @@ public final class ControladorGrafica implements ActionListener {
                     break;
 
             }
+            } catch(NumberFormatException exception){
+             JOptionPane.showMessageDialog(null, "Escalar vacio o no numerico");
+                tablaActualizada = false;
+            }catch(ArrayIndexOutOfBoundsException exception2){
+             JOptionPane.showMessageDialog(null, "Ingresa el numero de filas y columnas mayor a cero");
+             tablaActualizada = false;
+            }
             if (tablaActualizada == true) {
-                actualizarTablaResultante(matrizResultado);
+                actualizarTablaResultante(matrizResultado);  
             }
         }
         if (e.getSource() == vista.Botoncambiar) {
@@ -186,7 +195,7 @@ public final class ControladorGrafica implements ActionListener {
                         numFilas = (Integer.parseInt(vista.tfFilas.getText()));
                         numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
                         numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
-                        numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText());
+                        numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText()); 
                         if (numColumnas == numFilasSegundaMatriz) {
                             inicializarTablasDeMatrices(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
                         } else {
@@ -198,23 +207,23 @@ public final class ControladorGrafica implements ActionListener {
 
                     case 1:
                         vista.tfEscalar.setEnabled(false);
-
+                        
                     case 3:
                     case 5:
-                    case 6:
                         numFilas = (Integer.parseInt(vista.tfFilas.getText()));
-                        numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
+                        numColumnas = (Integer.parseInt(vista.tfColumnas.getText())); 
                         inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
                         break;
-
+                    case 6:
                     case 4:
                         numFilas = (Integer.parseInt(vista.tfFilas.getText()));
                         numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
                         if (numFilas == numColumnas) {
+                          
                             inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
                             break;
                         } else {
-                            JOptionPane.showMessageDialog(null, "La inversa solo se puede realizar para matrices cuadradas");
+                            JOptionPane.showMessageDialog(null, "Esta funcion solo se puede realizar para matrices cuadradas");
                             vista.agregarfilcol.setEnabled(false);
                             break;
                         }
@@ -225,6 +234,8 @@ public final class ControladorGrafica implements ActionListener {
                 }
             } catch (NumberFormatException exception) {
                 JOptionPane.showMessageDialog(null, "Llene todos los campos");
+            } catch(ArrayIndexOutOfBoundsException exception2){
+             JOptionPane.showMessageDialog(null, "Ingresa el numero de filas y columnas mayor a cero");
             }
         }
     }
