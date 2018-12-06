@@ -28,7 +28,6 @@ public final class ControladorGrafica implements ActionListener {
     //Campos de la clase
     final int PRIMERINDICE = 0;
 
-    
 //    Multiplicacion multiplicacion;
 //    Sumatoria suma;
 //    Transpuesta transponer;
@@ -115,6 +114,7 @@ public final class ControladorGrafica implements ActionListener {
             boolean tablaActualizada = true;
             switch (vista.cbopcionesdematriz.getSelectedIndex()) {
                 case 0:
+
                     matrizResultado = Sumatoria.sumarMatrices(matrizLectura, leerMatriz(vista.tablamatriz2));
                     break;
 
@@ -166,46 +166,66 @@ public final class ControladorGrafica implements ActionListener {
             vista.botonagregarmatriz.setEnabled(true);
 
             int numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz = 0;
-            try{
-            switch (vista.cbopcionesdematriz.getSelectedIndex()) {
-                case 0:
-                case 2:
+            try {
+                switch (vista.cbopcionesdematriz.getSelectedIndex()) {
+                    case 0:
+                        numFilas = (Integer.parseInt(vista.tfFilas.getText()));
+                        numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
+                        numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
+                        numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText());
+                        if (numFilas == numFilasSegundaMatriz && numColumnas == numColumSegundaMatriz) {
+                            inicializarTablasDeMatrices(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La sumatoria sólo se puede para matrices de las mismas dimensiones");
+                            reiniciarVista();
+                        }
 
-                    numFilas =(Integer.parseInt(vista.tfFilas.getText()));
-                    numColumnas=(Integer.parseInt(vista.tfColumnas.getText()));
-                    numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
-                    numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText());
-                    inicializarTablasDeMatrices(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
-                    break;
+                        break;
+                    case 2:
 
-                case 1:
-                    vista.tfEscalar.setEnabled(false);
+                        numFilas = (Integer.parseInt(vista.tfFilas.getText()));
+                        numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
+                        numFilasSegundaMatriz = Integer.parseInt(vista.tfFilasSeg.getText());
+                        numColumSegundaMatriz = Integer.parseInt(vista.tfColSeg.getText());
+                        if (numColumnas == numFilasSegundaMatriz) {
+                            inicializarTablasDeMatrices(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La multiplicación sólo se puede para matrices que las columnas de la primera matriz son iguales a las filas de las segundas");
+                            reiniciarVista();
+                        }
 
-                case 3:
-                case 5:
-                case 6:
-                    numFilas=(Integer.parseInt(vista.tfFilas.getText()));
-                    numColumnas=(Integer.parseInt(vista.tfColumnas.getText()));
-                    inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
-                    break;
+                        break;
 
-                case 4:
-                    numFilas=(Integer.parseInt(vista.tfFilas.getText()));
-                    numColumnas=(Integer.parseInt(vista.tfColumnas.getText()));
-                    if (numFilas == numColumnas) {
+                    case 1:
+                        vista.tfEscalar.setEnabled(false);
+
+                    case 3:
+                    case 5:
+                    case 6:
+                        numFilas = (Integer.parseInt(vista.tfFilas.getText()));
+                        numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
                         inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
                         break;
-                    } else {
-                        JOptionPane.showMessageDialog(null, "La inversa solo se puede realizar para matrices cuadradas");
-                        vista.agregarfilcol.setEnabled(false);
+
+                    case 4:
+                        numFilas = (Integer.parseInt(vista.tfFilas.getText()));
+                        numColumnas = (Integer.parseInt(vista.tfColumnas.getText()));
+                        if (numFilas == numColumnas) {
+                            inicializarTablaDeUnaMatriz(numFilas, numColumnas, vista.tablamatrizdatos);
+                            break;
+                        } else {
+                            JOptionPane.showMessageDialog(null, "La inversa solo se puede realizar para matrices cuadradas");
+                            vista.agregarfilcol.setEnabled(false);
+                            break;
+                        }
+
+                    default:
                         break;
-                    }
 
-                default:
-                    break;
-
+                }
+            } catch (NumberFormatException exception) {
+                JOptionPane.showMessageDialog(null, "Llene todos los campos");
             }
-            }catch(NumberFormatException exception){JOptionPane.showMessageDialog(null, "Llene todos los campos");}
         }
     }
 
@@ -369,22 +389,24 @@ public final class ControladorGrafica implements ActionListener {
      * @return Devuelve una matriz con los datos introducidos por el usuario.
      */
     private double[][] leerMatriz(JTable tabla) {
-        double [][] matrizErronea = new double[1][1];
-        try{
-        int numeroFilas = tabla.getRowCount();
-        int numeroColumnas = tabla.getColumnCount();
+        double[][] matrizErronea = new double[1][1];
+        try {
+            int numeroFilas = tabla.getRowCount();
+            int numeroColumnas = tabla.getColumnCount();
 
-        double[][] matrizleida = new double[numeroFilas][numeroColumnas];
+            double[][] matrizleida = new double[numeroFilas][numeroColumnas];
 
-        for (int fila = 0; fila < numeroFilas; fila++) {
-            for (int columna = 0; columna < numeroColumnas; columna++) {
+            for (int fila = 0; fila < numeroFilas; fila++) {
+                for (int columna = 0; columna < numeroColumnas; columna++) {
 
-                matrizleida[fila][columna] = Double.parseDouble(tabla.getValueAt(fila, columna).toString());
+                    matrizleida[fila][columna] = Double.parseDouble(tabla.getValueAt(fila, columna).toString());
+                }
             }
+            return matrizleida;
+        } catch (NullPointerException exceptionNula) {
+            JOptionPane.showMessageDialog(null, "Llene las matrices u oprima enter en las matrices para confirmar");
         }
-             return matrizleida;   
-        }catch(NullPointerException exceptionNula){JOptionPane.showMessageDialog(null, "Llene las matrices u oprima enter en las matrices para confirmar");}
-return matrizErronea;
+        return matrizErronea;
     }
 
     /**
