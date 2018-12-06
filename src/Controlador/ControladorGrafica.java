@@ -190,7 +190,7 @@ public final class ControladorGrafica implements ActionListener {
                         if (numColumnas == numFilasSegundaMatriz) {
                             inicializarTablasDeMatrices(numFilas, numColumnas, numFilasSegundaMatriz, numColumSegundaMatriz, vista.tablamatrizdatos, vista.tablamatriz2);
                         } else {
-                            JOptionPane.showMessageDialog(null, "La multiplicación sólo se puede para matrices que las columnas de la primera matriz son iguales a las filas de las segundas");
+                            JOptionPane.showMessageDialog(null, "La multiplicación sólo se puede para matrices que la cantidad de las columnas de la primera matriz son iguales a la cantidad de las filas de las segunda");
                             reiniciarVista();
                         }
 

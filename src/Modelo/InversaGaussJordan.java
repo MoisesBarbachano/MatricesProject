@@ -2,21 +2,25 @@ package Modelo;
 
 import java.util.Scanner;
 
-
 /**
- * Esta clase contiene la funcionalidad para obtener la matriz inversa de una matriz mediante el método de Gauss Jordan.
+ * Esta clase contiene la funcionalidad para obtener la matriz inversa de una
+ * matriz mediante el método de Gauss Jordan.
+ *
  * @author Moisés Barbachano, José Cetina, Juan Moguel, Gerardo Hau
  */
 public class InversaGaussJordan {
 
     /**
-     * Método para obtener la inversa de una matriz mediante método de Gauss Jordan.
+     * Método para obtener la inversa de una matriz mediante método de Gauss
+     * Jordan.
+     *
      * @param matrizEntrada Matriz de la cual se quiere su inversa.
      * @return Matriz invertida por método de Gauss Jordan.
      */
     public static double[][] invertirGaussJordan(double matrizEntrada[][]) {
         double[][] matrizInvertida = matrizEntrada;
         int tamanioMatriz = matrizInvertida.length;
+        int columnasMatriz = matrizInvertida[0].length;
         double matrizResultado[][] = new double[tamanioMatriz][tamanioMatriz];
         double matrizAuxiliar[][] = new double[tamanioMatriz][tamanioMatriz];
 
@@ -87,6 +91,14 @@ public class InversaGaussJordan {
                 }
 
                 matrizResultado[filaMatriz][contadorIdentidad] /= matrizInvertida[indice[filaMatriz]][filaMatriz];
+            }
+        }
+
+        for (int fila = 0; fila < tamanioMatriz; fila++) {
+            for (int columna = 0; columna < columnasMatriz; columna++) {
+                if (matrizResultado[fila][columna] == -0.0) {
+                    matrizResultado[fila][columna] = 0.0;
+                }
             }
         }
 

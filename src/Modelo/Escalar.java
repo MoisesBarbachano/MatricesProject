@@ -18,10 +18,17 @@ public class Escalar {
         final int DIVISOR_MODULO_PAR = 2;
         double[][] matrizDuplicada = matriz;
         int numFilasMatriz = matrizDuplicada.length;
-        for (int fila = 0; fila < numFilasMatriz; fila++) {    //Limitar el numero de niveles de loop a 3
-            int numColumMatriz = matrizDuplicada[PRIMERINDICE].length;
+        int numColumMatriz = matrizDuplicada[PRIMERINDICE].length;
+        for (int fila = 0; fila < numFilasMatriz; fila++) {    //Limitar el numero de niveles de loop a 3          
             for (int columna = 0; columna < numColumMatriz; columna++) {
                 matrizDuplicada[fila][columna] = escalar * (matrizDuplicada[fila][columna]);
+            }
+        }
+        for (int fila = 0; fila < numFilasMatriz; fila++) {
+            for (int columna = 0; columna < numColumMatriz; columna++) {
+                if (matrizDuplicada[fila][columna] == -0.0) {
+                    matrizDuplicada[fila][columna] = 0.0;
+                }
             }
         }
         return matrizDuplicada;
